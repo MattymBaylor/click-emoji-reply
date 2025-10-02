@@ -1,4 +1,5 @@
 // Gmail Emoji Quick Response Extension
+console.log('[Gmail Emoji Extension] Script loaded!');
 
 const EMOJIS = [
   { emoji: '👍', label: 'Thumbs up' },
