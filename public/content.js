@@ -69,12 +69,11 @@ function handleEmojiClick(emoji) {
         composeArea.focus();
         document.execCommand('insertText', false, emoji);
         
-        // Optional: Auto-send the emoji
-        // Uncomment the lines below if you want to auto-send
-        // setTimeout(() => {
-        //   const sendButton = document.querySelector('[role="button"][aria-label*="Send"]');
-        //   if (sendButton) sendButton.click();
-        // }, 100);
+        // Auto-send the emoji
+        setTimeout(() => {
+          const sendButton = document.querySelector('[role="button"][aria-label*="Send"]');
+          if (sendButton) sendButton.click();
+        }, 100);
       }
     }, 500);
   }
