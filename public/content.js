@@ -57,15 +57,37 @@ function handleEmojiClick(emoji) {
 }
 
 function injectEmojiButtons() {
-  // Find all email action toolbars
-  const toolbars = document.querySelectorAll('[role="toolbar"]');
+  // Find all span elements with role="link" (Reply/Forward buttons)
+  const allLinks = document.querySelectorAll('span[role="link"]');
   
-  toolbars.forEach(toolbar => {
-    // Check if this toolbar contains reply buttons
-    const hasReplyButton = toolbar.querySelector('[aria-label*="Reply"]');
-    if (hasReplyButton && !toolbar.querySelector('.gmail-emoji-quick-response')) {
+  allLinks.forEach(link => {
+    const text = link.textContent.trim();
+    // Check if this is a Reply or Forward button
+    if ((text === 'Reply' || text === 'Forward' || text.includes('Reply')) && 
+        !link.dataset.emojiAdded) {
+      
+      link.dataset.emojiAdded = 'true';
+      
+      // Find the parent row/container
+      let container = link.closest('td');
+      if (!container) container = link.parentElement;
+      
+      // Create emoji buttons
       const emojiButtons = createEmojiButtons();
-      toolbar.insertBefore(emojiButtons, toolbar.firstChild);
+      
+      // Try to insert in the same row
+      const parent = container?.parentElement;
+      if (parent && parent.tagName === 'TR') {
+        const newCell = document.createElement('td');
+        newCell.style.paddingLeft = '10px';
+        newCell.appendChild(emojiButtons);
+        container.insertAdjacentElement('afterend', newCell);
+      } else if (container) {
+        // Fallback: insert after the container
+        emojiButtons.style.display = 'inline-block';
+        emojiButtons.style.marginLeft = '10px';
+        container.insertAdjacentElement('afterend', emojiButtons);
+      }
     }
   });
 }
