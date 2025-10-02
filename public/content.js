@@ -12,6 +12,10 @@ const EMOJIS = [
 function createEmojiButtons() {
   const container = document.createElement('div');
   container.className = 'gmail-emoji-quick-response';
+  container.style.display = 'inline-flex';
+  container.style.gap = '8px';
+  container.style.marginLeft = '12px';
+  container.style.alignItems = 'center';
   
   EMOJIS.forEach(({ emoji, label }) => {
     const button = document.createElement('button');
@@ -19,6 +23,25 @@ function createEmojiButtons() {
     button.textContent = emoji;
     button.title = label;
     button.setAttribute('aria-label', `Quick reply with ${label}`);
+    button.style.cssText = `
+      background: none;
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+    `;
+    
+    button.addEventListener('mouseenter', () => {
+      button.style.background = '#f1f3f4';
+      button.style.transform = 'scale(1.1)';
+    });
+    
+    button.addEventListener('mouseleave', () => {
+      button.style.background = 'none';
+      button.style.transform = 'scale(1)';
+    });
     
     button.addEventListener('click', (e) => {
       e.preventDefault();
@@ -57,38 +80,37 @@ function handleEmojiClick(emoji) {
 }
 
 function injectEmojiButtons() {
-  // Find all span elements with role="link" (Reply/Forward buttons)
-  const allLinks = document.querySelectorAll('span[role="link"]');
+  console.log('[Gmail Emoji] Running injection...');
   
-  allLinks.forEach(link => {
-    const text = link.textContent.trim();
-    // Check if this is a Reply or Forward button
-    if ((text === 'Reply' || text === 'Forward' || text.includes('Reply')) && 
-        !link.dataset.emojiAdded) {
+  // Find all tables in the email body that might contain reply buttons
+  const tables = document.querySelectorAll('table[role="presentation"]');
+  
+  tables.forEach(table => {
+    // Look for Reply/Forward text in span elements
+    const spans = table.querySelectorAll('span[role="link"]');
+    
+    spans.forEach(span => {
+      const text = span.textContent.trim();
       
-      link.dataset.emojiAdded = 'true';
-      
-      // Find the parent row/container
-      let container = link.closest('td');
-      if (!container) container = link.parentElement;
-      
-      // Create emoji buttons
-      const emojiButtons = createEmojiButtons();
-      
-      // Try to insert in the same row
-      const parent = container?.parentElement;
-      if (parent && parent.tagName === 'TR') {
-        const newCell = document.createElement('td');
-        newCell.style.paddingLeft = '10px';
-        newCell.appendChild(emojiButtons);
-        container.insertAdjacentElement('afterend', newCell);
-      } else if (container) {
-        // Fallback: insert after the container
-        emojiButtons.style.display = 'inline-block';
-        emojiButtons.style.marginLeft = '10px';
-        container.insertAdjacentElement('afterend', emojiButtons);
+      if ((text === 'Reply' || text === 'Forward' || text === 'Reply all') && 
+          !span.dataset.emojiInjected) {
+        
+        console.log('[Gmail Emoji] Found button:', text);
+        span.dataset.emojiInjected = 'true';
+        
+        // Find the parent TD
+        const td = span.closest('td');
+        if (td) {
+          // Create emoji buttons
+          const emojiContainer = createEmojiButtons();
+          
+          // Insert in the same cell, right after the link
+          span.parentElement.appendChild(emojiContainer);
+          
+          console.log('[Gmail Emoji] Buttons injected!');
+        }
       }
-    }
+    });
   });
 }
 
