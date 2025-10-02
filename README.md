@@ -1,73 +1,60 @@
-# Welcome to your Lovable project
+# Gmail Emoji Quick Response Chrome Extension
 
-## Project info
+A Chrome extension that adds emoji quick response buttons next to Gmail's Reply, Reply all, and Forward buttons.
 
-**URL**: https://lovable.dev/projects/f7ff5496-d5e3-4e70-bc5f-d5dd87046ab2
+## Features
 
-## How can I edit this code?
+- 6 emoji quick response buttons (👍, ❤️, 😊, 🎉, 👏, ✅)
+- Appears next to Gmail's native reply buttons
+- One-click emoji responses
+- Automatically opens compose area with selected emoji
+- Works with Gmail's interface
+- Dark mode support
 
-There are several ways of editing your application.
+## Installation
 
-**Use Lovable**
+1. Open Chrome and go to `chrome://extensions/`
+2. Enable "Developer mode" in the top right
+3. Click "Load unpacked"
+4. Select the `public` folder from this project
+5. The extension will be installed and active on Gmail
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/f7ff5496-d5e3-4e70-bc5f-d5dd87046ab2) and start prompting.
+## Usage
 
-Changes made via Lovable will be committed automatically to this repo.
+1. Open any email in Gmail
+2. Look for the emoji buttons next to the Reply/Reply all/Forward buttons
+3. Click any emoji to quickly compose a response with that emoji
+4. The compose area will open with the emoji already inserted
+5. Add more text if needed or send as-is
 
-**Use your preferred IDE**
+## Customization
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+To add or change emojis, edit the `EMOJIS` array in `public/content.js`:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```javascript
+const EMOJIS = [
+  { emoji: '👍', label: 'Thumbs up' },
+  { emoji: '❤️', label: 'Heart' },
+  // Add more emojis here
+];
 ```
 
-**Edit a file directly in GitHub**
+## Auto-send Feature
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+By default, the extension inserts the emoji but doesn't send it automatically. To enable auto-send, uncomment lines 45-48 in `public/content.js`.
 
-**Use GitHub Codespaces**
+## Files
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- `manifest.json` - Extension configuration
+- `content.js` - Main functionality
+- `content.css` - Styling for emoji buttons
 
-## What technologies are used for this project?
+## Permissions
 
-This project is built with:
+- `activeTab` - Required to interact with Gmail tabs
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+---
 
-## How can I deploy this project?
+## Original Lovable Project
 
-Simply open [Lovable](https://lovable.dev/projects/f7ff5496-d5e3-4e70-bc5f-d5dd87046ab2) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+**URL**: https://lovable.dev/projects/f7ff5496-d5e3-4e70-bc5f-d5dd87046ab2

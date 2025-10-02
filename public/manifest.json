@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Gmail Emoji Quick Response",
+  "version": "1.0",
+  "description": "Add emoji quick response buttons to Gmail",
+  "permissions": [
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://mail.google.com/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "icons": {
+    "16": "favicon.ico",
+    "48": "favicon.ico",
+    "128": "favicon.ico"
+  }
+}
